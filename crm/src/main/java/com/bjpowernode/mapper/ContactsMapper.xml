@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjpowernode.mapper.ContactsMapper">
+
+    <select id="getFilterAll" resultMap="getFilterAllMap">
+        select
+        cs.fullName cs_fullName,
+        cr.name cr_name,
+        cs.source cs_source,
+        cs.owner cs_owner,
+        cs.birth cs_birth
+      <include refid="filterGet"/>
+      limit #{startIndex},#{getRowsPerPage}
+    </select>
+
+    <!--查询总记录条数-->
+    <select id="getCount" resultType="int">
+        select count(*)
+        <include refid="filterGet"/>
+    </select>
+
+    <sql id="filterGet">
+        from tbl_contacts cs left join tbl_customer cr on cs.customerId=cr.id
+        <where>
+            <if test="data.owner != null and data.owner !=''">
+                and cs.owner like concat('%',#{data.owner},'%')
+            </if>
+            <if test="data.fullName !=null and data.fullName!=''">
+                and cs.fullName like concat('%',#{data.fullName},'%')
+            </if>
+            <if test="data.ContactsName !=null and data.ContactsName!=''">
+                and cr.name like concat('%',#{data.ContactsName},'%')
+            </if>
+            <if test="data.birth !=null and data.birth!=''">
+                and cs.birth =#{data.birth}
+            </if>
+            <if test="data.source !=null and data.source!=''">
+                and cs.source =#{data.source}
+            </if>
+        </where>
+    </sql>
+
+    <resultMap id="getFilterAllMap" type="contacts" >
+        <id property="id" column="cs_id" />
+        <result property="owner" column="cs_owner" />
+        <result property="source" column="cs_source" />
+        <result property="appellation" column="cs_appellation" />
+        <result property="fullName" column="cs_fullName" />
+        <result property="email" column="cs_email" />
+        <result property="job" column="cs_job" />
+        <result property="mphone" column="cs_mphone" />
+        <result property="description" column="cs_description" />
+        <result property="birth" column="cs_birth" />
+        <result property="customerId" column="cs_customerId" />
+        <result property="createBy" column="cs_createBy" />
+        <result property="createTime" column="cs_createTime" />
+        <result property="editBy" column="cs_editBy" />
+        <result property="editTime" column="cs_editTime" />
+        <result property="contactSummary" column="cs_contactSummary" />
+        <!--Customer customer;  /*客户表*/-->
+    <association property="customer">
+        <id property="id" column="cr_id" />
+        <result property="owner" column="cr_owner" />
+        <result property="name" column="cr_name" />
+        <result property="phone" column="cr_phone" />
+        <result property="website" column="cr_website" />
+        <result property="description" column="cr_description" />
+        <result property="createBy" column="cr_createBy" />
+        <result property="createTime" column="cr_createTime" />
+        <result property="editBy" column="cr_editBy" />
+        <result property="editTime" column="cr_editTime" />
+        <result property="contactSummary" column="cr_contactSummary" />
+        <result property="nextContactTime" column="cr_nextContactTime" />
+        <result property="address" column="cr_address" />
+    </association>
+    </resultMap>
+</mapper>

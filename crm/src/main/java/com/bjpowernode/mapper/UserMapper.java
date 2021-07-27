@@ -1,0 +1,12 @@
+package com.bjpowernode.mapper;
+
+import com.bjpowernode.pojo.User;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+public interface UserMapper {
+    User getUser(@Param("username") String username,@Param("password")String password);
+
+    List<User> getALL();
+}

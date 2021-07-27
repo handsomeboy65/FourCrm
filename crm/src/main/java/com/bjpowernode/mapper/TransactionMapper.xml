@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjpowernode.mapper.TransactionMapper">
+
+    <!--过滤查询-->
+    <select id="getFilterAll" resultMap="transactionMap">
+      select
+            t.id t_id,
+            t.owner t_owner,
+            t.amountOfMoney t_amountOfMoney,
+            t.name t_name,
+            t.expectedClosingDate t_expectedClosingDate,
+            t.customerId t_customerId,
+            t.stage t_stage,
+            t.type t_type,
+            t.source t_source,
+            t.activityId t_activityId,
+            t.contactsId t_contactsId,
+            t.description t_description,
+            t.createBy t_createBy,
+            t.createTime t_createTime,
+            t.editBy t_editBy,
+            t.editTime t_editTime,
+            t.contactSummary t_contactSummary,
+            t.nextContactTime t_nextContactTime,
+
+            cr.id cr_id,
+            cr.owner cr_owner,
+            cr.name cr_name,
+            cr.phone cr_phone,
+            cr.website cr_website,
+            cr.description cr_description,
+            cr.createBy cr_createBy,
+            cr.createTime cr_createTime,
+            cr.editBy cr_editBy,
+            cr.editTime cr_editTime,
+            cr.contactSummary cr_contactSummary,
+            cr.nextContactTime cr_nextContactTime,
+            cr.address cr_address,
+
+            cs.id cs_id,
+            cs.owner cs_owner,
+            cs.source cs_source,
+            cs.appellation cs_appellation,
+            cs.fullName cs_fullName,
+            cs.email cs_email,
+            cs.job cs_job,
+            cs.mphone cs_mphone,
+            cs.description cs_description,
+            cs.birth cs_birth,
+            cs.customerId cs_customerId,
+            cs.createBy cs_createBy,
+            cs.createTime cs_createTime,
+            cs.editBy cs_editBy,
+            cs.editTime cs_editTime,
+            cs.contactSummary cs_contactSummary,
+            cs.nextContactTime cs_nextContactTime,
+            cs.address cs_address,
+
+            act.id act_id,
+            act.owner act_owner,
+            act.name act_name,
+            act.startDate act_startDate,
+            act.endDate act_endDate,
+            act.cost act_cost,
+            act.description act_description,
+            act.createBy act_createBy,
+            act.createTime act_createTime,
+            act.editBy act_editBy,
+            act.editTime act_editTime
+            <include refid="filterGet"/>
+            limit #{startIndex},#{getRowsPerPage}
+    </select>
+
+    <!--查询总记录条数-->
+    <select id="getCount" resultType="int">
+        select count(*)
+        <include refid="filterGet"/>
+    </select>
+
+   <resultMap id="transactionMap" type="Transaction">
+    <id property="id" column="t_id" />
+    <result property="owner" column="t_owner" />
+    <result property="amountOfMoney" column="t_amountOfMoney" />
+    <result property="name" column="t_name" />
+    <result property="expectedClosingDate" column="t_expectedClosingDate" />
+    <result property="customerId" column="t_customerId" />
+    <result property="stage" column="t_stage" />
+    <result property="type" column="t_type" />
+    <result property="source" column="t_source" />
+    <result property="activityId" column="t_activityId" />
+    <result property="contactsId" column="t_contactsId" />
+    <result property="description" column="t_description" />
+    <result property="createBy" column="t_createBy" />
+    <result property="createTime" column="t_createTime" />
+    <result property="editBy" column="t_editBy" />
+    <result property="editTime" column="t_editTime" />
+    <result property="contactSummary" column="t_contactSummary" />
+    <result property="nextContactTime" column="t_nextContactTime" />
+    <result property="" column="t_" />
+  <!--Activity activity;  /*线索表 */-->
+    <association property="activity">
+     <id property="id" column="act_id" />
+     <result property="owner" column="act_owner" />
+     <result property="name" column="act_name" />
+     <result property="startDate" column="act_startDate" />
+     <result property="endDate" column="act_endDate" />
+     <result property="cost" column="act_cost" />
+     <result property="description" column="act_description" />
+     <result property="createBy" column="act_createBy" />
+     <result property="createTime" column="act_createTime" />
+     <result property="editBy" column="act_editBy" />
+     <result property="editTime" column="act_editTime" />
+    </association>
+    <!--Contacts contacts;  /*联系人表*/-->
+    <association property="contacts">
+     <id property="id" column="cs_id" />
+     <result property="owner" column="cs_owner" />
+     <result property="source" column="cs_source" />
+     <result property="appellation" column="cs_appellation" />
+     <result property="fullName" column="cs_fullName" />
+     <result property="email" column="cs_email" />
+     <result property="job" column="cs_job" />
+     <result property="mphone" column="cs_mphone" />
+     <result property="description" column="cs_description" />
+     <result property="birth" column="cs_birth" />
+     <result property="customerId" column="cs_customerId" />
+     <result property="createBy" column="cs_createBy" />
+     <result property="createTime" column="cs_createTime" />
+     <result property="editBy" column="cs_editBy" />
+     <result property="editTime" column="cs_editTime" />
+     <result property="contactSummary" column="cs_contactSummary" />
+    </association>
+    <!--Customer customer;  /*客户表*/-->
+    <association property="customer">
+     <id property="id" column="cr_id" />
+     <result property="owner" column="cr_owner" />
+     <result property="name" column="cr_name" />
+     <result property="phone" column="cr_phone" />
+     <result property="website" column="cr_website" />
+     <result property="description" column="cr_description" />
+     <result property="createBy" column="cr_createBy" />
+     <result property="createTime" column="cr_createTime" />
+     <result property="editBy" column="cr_editBy" />
+     <result property="editTime" column="cr_editTime" />
+     <result property="contactSummary" column="cr_contactSummary" />
+     <result property="nextContactTime" column="cr_nextContactTime" />
+     <result property="address" column="cr_address" />
+    </association>
+   </resultMap>
+
+    <sql id="filterGet">
+        from  tbl_transaction t
+        left join tbl_marketing_activities act on act.id=t.activityId
+        left join tbl_customer cr on cr.id=t.contactsId
+        left join tbl_contacts cs on cs.id=t.customerId
+    <where>
+        <if test="data.owner != null and data.owner !=''">
+           and t.owner like concat('%',#{data.owner},'%')
+        </if>
+        <if test="data.name != null and data.name !=''">
+            and t.name like concat('%',#{data.name},'%')
+        </if>
+        <if test="data.CustomerName != null and data.CustomerName !=''">
+            and cr.name like concat('%',#{data.CustomerName},'%')
+        </if>
+        <if test="data.ContactsName != null and data.ContactsName !=''">
+            and cs.name like concat('%',#{data.ContactsName},'%')
+        </if>
+        <if test="data.stage != null and data.stage !=''">
+            and t.stage=#{data.stage}
+        </if>
+        <if test="data.type != null and data.type !=''">
+            and t.type=#{data.type}
+        </if>
+        <if test="data.source != null and data.source !=''">
+            and t.source=#{data.source}
+        </if>
+    </where>
+    </sql>
+
+</mapper>

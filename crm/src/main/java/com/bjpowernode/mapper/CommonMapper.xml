@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bjpowernode.mapper.CommonMapper">
+    <!--市场活动专有查询。并非通用-->
+    <select id="getAll" resultType="Activity">
+        select * from tbl_marketing_activities
+        <where>
+            <if test="id!=null and id!=''">
+                and id=#{id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="owner!=null and owner!=''">
+                and owner like concat('%', #{owner},'%')
+            </if>
+            <if test="startDate!=null and startDate!=''">
+                and startDate=#{startDate}
+            </if>
+            <if test="endDate!=null and endDate!=''">
+                and endDate=#{endDate}
+            </if>
+        </where>
+    </select>
+    <!--市场活动专有查询一个,并非通用-->
+    <select id="getOne" resultType="Activity">
+        select * from ${tableName} where id=#{id}
+    </select>
+
+
+
+    <!--通用插入数据-->
+    <insert id="insert">
+        insert into ${tableName}(
+       <foreach collection="data" index="key" separator=",">
+           ${key}
+       </foreach>
+        )
+       values(
+       <foreach collection="data" item="value" separator=",">
+           #{value}
+       </foreach>
+        )
+    </insert>
+    <!--通用修改数据-->
+    <update id="update">
+        update ${tableName} set
+        <foreach collection="data" index="key" item="value" separator=",">
+            ${key}=#{value}
+        </foreach>
+        where id=#{data.id}
+    </update>
+    <!--通用删除-->
+    <delete id="delete">
+        delete from ${tableName} where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
